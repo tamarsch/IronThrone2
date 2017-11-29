@@ -11,14 +11,35 @@
 
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import messages from './messages';
+import Button from '../../components/Button';
 
 export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: '',
+      categories: '',
+    };
+  }
   render() {
     return (
-      <h1>
-        <FormattedMessage {...messages.header} />
-      </h1>
+      <div>
+        <h1>
+          <FormattedMessage {...messages.header} />
+        </h1>
+        {this.state.categories.map((category) => (
+          <Link to="/category" onClick={this.props.setCategory}>
+            <Button text={category} buttonStyle={{ backgroundColor: '#9c4b9e', height: '30px', width: '30px' }} outerStyle={{ display: 'inline-block', padding: '0 10px' }} />
+          </Link>
+        ))}
+      </div>
     );
   }
 }
+
+HomePage.propTypes = {
+  setCategory: PropTypes.func,
+};
