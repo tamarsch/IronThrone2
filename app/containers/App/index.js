@@ -17,13 +17,40 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
-export default function App() {
-  return (
-    <div>
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route component={NotFoundPage} />
-      </Switch>
-    </div>
-  );
+export default class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: '',
+      category: '',
+    };
+  }
+  setCategory(category) {
+    this.setCategory({
+      category,
+    });
+  }
+  render() {
+    return (
+      <div>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            component={() => (
+              <HomePage setCategory={(category) => this.setCategory(category)} />
+            )}
+          />
+          {/* <Route */}
+          {/* exact */}
+          {/* path="/Category" */}
+          {/* component={() => ( */}
+          {/* <CategoryPage category={this.state.category}/> */}
+          {/* )} */}
+          {/* /> */}
+          <Route component={NotFoundPage} />
+        </Switch>
+      </div>
+    );
+  }
 }

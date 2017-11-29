@@ -20,7 +20,6 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
   constructor(props) {
     super(props);
     this.state = {
-      userName: '',
       categories: '',
     };
   }
@@ -31,7 +30,7 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
           <FormattedMessage {...messages.header} />
         </h1>
         {this.state.categories.map((category) => (
-          <Link to="/category" onClick={this.props.setCategory}>
+          <Link to="/Category" onClick={this.props.setCategory}>
             <Button text={category} buttonStyle={{ backgroundColor: '#9c4b9e', height: '30px', width: '30px' }} outerStyle={{ display: 'inline-block', padding: '0 10px' }} />
           </Link>
         ))}
