@@ -9,22 +9,28 @@
   color: #fff;
 }
 
-.post helpReq {
+.post {
+  font-family: NHaasGroteskDSPro-95Blk;
+}
+
+.helpReq {
   width: 250px;
   background-color: #9aa2f8;
   margin-bottom: 20px;
   margin-left: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
+  color: #9470fc;
 }
 
-.post helpSug {
+.helpSug {
   width: 250px;
   background-color: #62dfdf;
   margin-bottom: 20px;
   margin-left: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
+  color: #13c7c8;
 }
 
 .post-title {
@@ -35,5 +41,9 @@
   font-family: NHaasGroteskDSPro-95Blk;
   font-size: 30px;
   text-align: left;
-  color: #9470fc;
+  /*color: #9470fc;*/
+}
+
+.post-content {
+  line-height: 1px;
 }
