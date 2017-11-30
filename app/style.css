@@ -1,16 +1,26 @@
-.geosuggest__suggests--hidden {
-  max-height: 0;
-  overflow: hidden;
-  border-width: 0;
+/*.geosuggest__suggests--hidden {*/
+  /*max-height: 0;*/
+  /*overflow: hidden;*/
+  /*border-width: 0;*/
+/*}*/
+
+/*.geosuggest__item--active {*/
+  /*background: #267dc0;*/
+  /*color: #fff;*/
+/*}*/
+
+@font-face {
+  font-family: titleFont;
+  src: url("fonts/NHaasGroteskDSPro-95Blk.otf");
 }
 
-.geosuggest__item--active {
-  background: #267dc0;
-  color: #fff;
+@font-face {
+  font-family: secondFont;
+  src: url("fonts/NHaasGroteskDSPro-65Md.otf");
 }
 
 .post {
-  font-family: NHaasGroteskDSPro-95Blk;
+  /*font-family: firstFont;*/
 }
 
 .helpReq {
@@ -38,12 +48,12 @@
   position: relative;
   width: 100%;
   height: 15%;
-  font-family: NHaasGroteskDSPro-95Blk;
+  font-family: titleFont;
   font-size: 30px;
   text-align: left;
   /*color: #9470fc;*/
 }
 
 .post-content {
-  line-height: 1px;
+  font-family: secondFont;
 }

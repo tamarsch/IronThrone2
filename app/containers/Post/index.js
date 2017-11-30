@@ -35,9 +35,12 @@ export default class Post extends React.PureComponent { // eslint-disable-line r
           <p><b>Location:</b> {this.props.postObj.location}</p>
           <p><b>{this.getTypeOfRequest()}</b> {this.props.postObj.number_of_helpers_needed}</p>
           <p>It will give {this.props.postObj.score} point!</p>
-          <p>Status: {this.props.postObj.status}</p>
+          <p><b>Status:</b> {this.props.postObj.status}</p>
         </div>
-
+        <div className="buttons">
+          <button className="in-button"></button>
+          <button className="comment"></button>
+        </div>
         {
           this.props.postObj.comments.map((comment, index) =>
             (
