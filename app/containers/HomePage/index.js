@@ -10,11 +10,9 @@
  */
 
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import Chip from 'material-ui/Chip';
 import Post from 'containers/Post/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
-import messages from './messages';
 import InputSelect from '../../components/InputSelect';
 import Button from '../../components/Button/index';
 
@@ -22,14 +20,41 @@ export default class HomePage extends React.Component { // eslint-disable-line r
   constructor(props) {
     super(props);
     this.state = {
-      categories: '',
-      filters: {},
+      categories: [],
+      filters: [],
       allPosts: [],
       filteredPosts: [],
       helpOutForm: false,
       helpMeForm: false,
       loggedIn: false,
+      userId: '',
+      err: '',
     };
+  }
+  init() {
+    fetch('http://iron-help.com/api/category').then((res) => {
+      res.json()
+        .then((data) => {
+          console.log('data', JSON.stringify(data));
+          this.setState({
+            categories: data,
+          });
+        });
+    }).catch((err) => {
+      this.setState({ err: err.message });
+    });
+    fetch('http://iron-help.com/api/post').then((res) => {
+      res.json()
+        .then((data) => {
+          console.log('data', JSON.stringify(data));
+          this.setState({
+            allPosts: data,
+            filteredPosts: data,
+          });
+        });
+    }).catch((err) => {
+      this.setState({ err: err.message });
+    });
   }
   openHelpMeForm() {
     this.setState({
@@ -42,45 +67,47 @@ export default class HomePage extends React.Component { // eslint-disable-line r
     });
   }
   filter(category) {
-    if (this.state.filters[category]) return;
+    console.log(this.state.filters);
+    if (this.state.filters.indexOf(category) >= 0) return;
     const filters = this.state.filters;
-    filters[category] = 1;
-    const filteredPosts = this.state.filteredPosts;
-    filteredPosts.filter((post) => post.category !== category);
+    filters.push(category);
+    let filteredPosts = this.state.filteredPosts;
+    filteredPosts = filteredPosts.filter((post) => post.category !== category);
     this.setState({
       filters,
       filteredPosts,
     });
   }
   deleteFilter(category) {
-    if (!this.state.filters[category]) return;
-    const filters = this.state.filters;
-    delete filters[category];
-    const unfilteredPosts = this.state.allPosts;
-    unfilteredPosts.filter((post) => post.category === category);
-    const filteredPosts = this.state.filteredPosts;
-    filteredPosts.concat(unfilteredPosts);
+    console.log(category);
+    if (!this.state.filters.indexOf(category) < 0) return;
+    let filters = this.state.filters;
+    filters = filters.filter((filter) => filter !== category);
+    console.log(this.state.filters);
+    let unfilteredPosts = this.state.allPosts;
+    unfilteredPosts = unfilteredPosts.filter((post) => post.category === category);
+    let filteredPosts = this.state.filteredPosts;
+    filteredPosts = filteredPosts.concat(unfilteredPosts);
     this.setState({
       filters,
       filteredPosts,
     });
   }
-  login() {
+  login(userId) {
     this.setState({
       loggedIn: true,
+      userId,
     });
+    this.init();
   }
   render() {
     if (!this.state.loggedIn) {
       return (
-        <LoginPage logIn={() => this.login()} />
+        <LoginPage logIn={(userId) => this.login(userId)} />
       );
     }
     return (
       <div>
-        <h1>
-          <FormattedMessage {...messages.header} />
-        </h1>
         {
           this.state.helpMeForm || this.state.helpOutForm ?
             // (<Form />) :
@@ -100,24 +127,27 @@ export default class HomePage extends React.Component { // eslint-disable-line r
                   outerStyle={{ display: 'inline-block', padding: '0 10px' }}
                 />
                 <InputSelect
-                  hint="#Pets #Travel #Apartment #Kids #Fasion #Sports"
-                  dataSource={this.state.categories}
+                  hint="Filter"
+                  dataSource={this.state.categories.map((category) => category.name)}
                   onNewRequest={(category) => this.filter(category)}
                 />
-                {
-                  this.state.filters.map((category, index) => (
-                    <Chip
-                      key={index.toString()}
-                      onRequestDelete={() => this.deleteFilter(category)}
-                    >
-                      {category}
-                    </Chip>
-                  ))
-                }
+                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                  {
+                    this.state.filters.map((category, index) => (
+                      <Chip
+                        key={index.toString()}
+                        onRequestDelete={() => this.deleteFilter(category)}
+                      >
+                        {category}
+                      </Chip>
+                    ))
+                  }
+                </div>
                 {
                   this.state.filteredPosts.map((post, index) => (
                     <Post
                       key={index.toString()}
+                      postObj={post}
                     />
                   ))
                 }

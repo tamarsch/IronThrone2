@@ -17,6 +17,10 @@ export default class InputSelect extends React.PureComponent {
       searchText: '',
     };
   }
+  onNewRequest(val) {
+    this.handleClear();
+    this.props.onNewRequest(val);
+  }
   handleClear() {
     this.setState({ searchText: '' });
   }
@@ -29,7 +33,7 @@ export default class InputSelect extends React.PureComponent {
           floatingLabelText={this.props.hint}
           dataSource={this.props.dataSource}
           onUpdateInput={(value) => this.setState({ searchText: value })}
-          onNewRequest={this.props.onNewRequest}
+          onNewRequest={(val) => this.onNewRequest(val)}
           filter={(searchText, key) => (key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1)}
           openOnFocus
           listStyle={{ maxHeight: 200, overflow: 'auto' }}
