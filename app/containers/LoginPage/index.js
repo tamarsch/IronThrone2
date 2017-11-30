@@ -36,7 +36,7 @@ export default class LoginPage extends React.PureComponent { // eslint-disable-l
         .then((data) => {
           console.log('data', JSON.stringify(data));
           if (data.status === 'ok') {
-            this.props.logIn(data.user_id, data.name);
+            this.props.logIn(data.user.user_id, data.user.name);
           } else {
             this.setState({ err: data.msg });
           }
@@ -68,7 +68,7 @@ export default class LoginPage extends React.PureComponent { // eslint-disable-l
           onChange={(event, newValue) => this.setState({ password: newValue })}
         />
         <br />
-        <RaisedButton label="Submit" primary style={style} onClick={(event) => this.handleClick(event)} />
+        <RaisedButton label="Submit" primary style={style} onClick={() => this.handleClick()} />
       </div>
     );
   }

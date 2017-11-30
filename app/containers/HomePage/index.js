@@ -11,6 +11,8 @@
 
 import React from 'react';
 import Chip from 'material-ui/Chip';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import Post from 'containers/Post/Loadable';
 import Form from 'containers/Form/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
@@ -31,6 +33,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
       userId: '',
       err: '',
       username: '',
+      selectValue: 1,
     };
   }
   init() {
@@ -67,6 +70,8 @@ export default class HomePage extends React.Component { // eslint-disable-line r
             allPosts: data,
             filteredPosts: data,
           });
+          this.back();
+          this.state.filters.forEach((filter) => this.filter(filter));
         });
     }).catch((err) => {
       this.setState({ err: err.message });
@@ -88,28 +93,51 @@ export default class HomePage extends React.Component { // eslint-disable-line r
       helpOutForm: true,
     });
   }
-  filter(category) {
+  filterByType(event, index, value) {
+    console.log(index, event);
+    const allPosts = this.state.allPosts;
+    if (value === 1) {
+      this.setState({
+        filteredPosts: allPosts,
+        selectValue: value,
+        filters: [],
+      });
+    } else if (value === 2) {
+      this.setState({
+        filteredPosts: allPosts.filter((post) => post.type === 'help_request'),
+        selectValue: value,
+        filters: [],
+      });
+    } else {
+      this.setState({
+        filteredPosts: allPosts.filter((post) => post.type === 'help_suggest'),
+        selectValue: value,
+        filters: [],
+      });
+    }
+  }
+  deleteFilter(category) {
     console.log(this.state.filters);
-    if (this.state.filters.indexOf(category) >= 0) return;
-    const filters = this.state.filters;
-    filters.push(category);
-    let filteredPosts = this.state.filteredPosts;
-    filteredPosts = filteredPosts.filter((post) => post.category.name !== category);
+    if (this.state.filters.indexOf(category) < 0) return;
+    let filters = this.state.filters;
+    filters = filters.filter((filter) => filter !== category);
+    console.log(this.state.filters);
+    let filteredPosts = this.state.allPosts;
+    if (filters.length !== 0) {
+      filteredPosts = filteredPosts.filter((post) => filters.indexOf(post.category.name) >= 0);
+    }
     this.setState({
       filters,
       filteredPosts,
     });
   }
-  deleteFilter(category) {
+  filter(category) {
     console.log(category);
-    if (!this.state.filters.indexOf(category) < 0) return;
-    let filters = this.state.filters;
-    filters = filters.filter((filter) => filter !== category);
-    console.log(this.state.filters);
-    let unfilteredPosts = this.state.allPosts;
-    unfilteredPosts = unfilteredPosts.filter((post) => post.category.name === category);
-    let filteredPosts = this.state.filteredPosts;
-    filteredPosts = filteredPosts.concat(unfilteredPosts);
+    if (this.state.filters.indexOf(category) >= 0) return;
+    const filters = this.state.filters;
+    filters.push(category);
+    let filteredPosts = this.state.allPosts;
+    filteredPosts = filteredPosts.filter((post) => filters.indexOf(post.category.name) >= 0);
     this.setState({
       filters,
       filteredPosts,
@@ -157,11 +185,22 @@ export default class HomePage extends React.Component { // eslint-disable-line r
                   buttonStyle={{ backgroundColor: '#9c4b9e' }}
                   outerStyle={{ display: 'inline-block', padding: '0 10px' }}
                 />
-                <InputSelect
-                  hint="Filter"
-                  dataSource={this.state.categories.map((category) => category.name)}
-                  onNewRequest={(category) => this.filter(category)}
-                />
+                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                  <InputSelect
+                    hint="Filter"
+                    dataSource={this.state.categories.map((category) => category.name)}
+                    onNewRequest={(category) => this.filter(category)}
+                  />
+                  <SelectField
+                    floatingLabelText=""
+                    value={this.state.selectValue}
+                    onChange={(event, index, value) => this.filterByType(event, index, value)}
+                  >
+                    <MenuItem value={1} primaryText="Both" />
+                    <MenuItem value={2} primaryText="Help Requests" />
+                    <MenuItem value={3} primaryText="Help Suggestions" />
+                  </SelectField>
+                </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                   {
                     this.state.filters.map((category, index) => (

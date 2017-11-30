@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /**
  *
  * Form
@@ -22,13 +23,11 @@ export default class Form extends React.PureComponent { // eslint-disable-line r
       date: '',
       category: '',
       location: '', // optional
-      duration: '', // optional
       difficulty: '', // optional
       description: '', // optional
       limit: '', // assignees limit
       status: '', // open / assigned / closed -- the user needs to close it
       file: '', // upload attachment
-      user: '',
     };
   }
   setTitle(value) {
@@ -68,13 +67,13 @@ export default class Form extends React.PureComponent { // eslint-disable-line r
         type: this.props.helpme ? 'help_request' : 'help_suggest',
         category_id: this.state.category,
         open_date: new Date(),
-        duration: this.state.duration,
         open_user_id: this.props.userId,
         status: 'open',
         location: 'tel-aviv',
         description: this.state.description,
-        difficulty: this.state.difficulty,
-        number_of_helpers_needed: this.state.limit ? this.state.limit : null,
+        difficulty: this.state.difficulty ? parseFloat(this.state.difficulty) : null,
+        number_of_helpers: this.state.limit ? parseInt(this.state.limit) : null,
+        duration: 0,
       }),
     }).then((res) => {
       res.json()
@@ -97,14 +96,14 @@ export default class Form extends React.PureComponent { // eslint-disable-line r
           onClick={() => this.props.back()}
           text="Back"
           buttonStyle={{ backgroundColor: '#9c4b9e' }}
-          outerStyle={{ display: 'inline-block', padding: '0 10px' }}
+          outerStyle={{ display: 'inline-block', padding: '10px 10px' }}
         />
-        <div className="form-header">
-          <Input hint="Please enter a title here" value={this.state.title} onChange={(event) => this.setTitle(event.target.value)} />
+        <div className="form-header" style={{ textAlign: 'center', margin: '10px' }}>
+          <Input hint="Please enter a title here" value={this.state.title} onChange={(event) => this.setTitle(event.target.value)} style={{ margin: '10px' }} />
           {/* enter date tag here*/}
           <h4 className="user-name">{this.props.user}</h4>
           <div className="difficulty-level">
-            <select value={this.state.difficulty} onChange={(event) => this.updateDifficulty(event.target.value)}>
+            <select value={this.state.difficulty} onChange={(event) => this.updateDifficulty(event.target.value)} style={{ margin: '10px' }}>
               <option value="-1">Select difficulty level</option>
               <option value="2.5">Irrelevant</option>
               <option value="1">Super easy</option>
@@ -115,7 +114,7 @@ export default class Form extends React.PureComponent { // eslint-disable-line r
             </select>
           </div>
           <div className="category">
-            <select value={this.state.category} onChange={(event) => this.updateCategory(event.target.value)}>
+            <select value={this.state.category} onChange={(event) => this.updateCategory(event.target.value)} style={{ margin: '10px' }}>
               <option value="-1">Select category</option>
               {
                 this.props.categories.map((category, index) => (
@@ -131,20 +130,21 @@ export default class Form extends React.PureComponent { // eslint-disable-line r
                   hint="How many helpers?"
                   value={this.state.limit}
                   onChange={(event) => this.setNumberOfHelpers(event.target.value)}
+                  style={{ margin: '10px' }}
                 />
               ) :
               null
           }
+          <div className="form-description">
+            <Input hint="Please enter description here" value={this.state.description} onChange={(event) => this.setDescription(event.target.value)} style={{ margin: '10px' }} />
+          </div>
+          <Button
+            onClick={() => this.submit()}
+            text={this.props.helpText}
+            buttonStyle={{ backgroundColor: '#9c4b9e' }}
+            outerStyle={{ display: 'inline-block', padding: '10px 10px' }}
+          />
         </div>
-        <div className="form-description">
-          <Input hint="Please enter description here" value={this.state.description} onChange={(event) => this.setDescription(event.target.value)} />
-        </div>
-        <Button
-          onClick={() => this.submit()}
-          text={this.props.helpText}
-          buttonStyle={{ backgroundColor: '#9c4b9e' }}
-          outerStyle={{ display: 'inline-block', padding: '0 10px' }}
-        />
       </div>
     );
   }
