@@ -12,6 +12,7 @@
 import React from 'react';
 import Chip from 'material-ui/Chip';
 import Post from 'containers/Post/Loadable';
+import Form from 'containers/Form/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import InputSelect from '../../components/InputSelect';
 import Button from '../../components/Button/index';
@@ -29,6 +30,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
       loggedIn: false,
       userId: '',
       err: '',
+      username: '',
     };
   }
   init() {
@@ -56,6 +58,26 @@ export default class HomePage extends React.Component { // eslint-disable-line r
       this.setState({ err: err.message });
     });
   }
+  submit() {
+    fetch('http://iron-help.com/api/post').then((res) => {
+      res.json()
+        .then((data) => {
+          console.log('data', JSON.stringify(data));
+          this.setState({
+            allPosts: data,
+            filteredPosts: data,
+          });
+        });
+    }).catch((err) => {
+      this.setState({ err: err.message });
+    });
+  }
+  back() {
+    this.setState({
+      helpMeForm: false,
+      helpOutForm: false,
+    });
+  }
   openHelpMeForm() {
     this.setState({
       helpMeForm: true,
@@ -72,7 +94,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
     const filters = this.state.filters;
     filters.push(category);
     let filteredPosts = this.state.filteredPosts;
-    filteredPosts = filteredPosts.filter((post) => post.category !== category);
+    filteredPosts = filteredPosts.filter((post) => post.category.name !== category);
     this.setState({
       filters,
       filteredPosts,
@@ -85,7 +107,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
     filters = filters.filter((filter) => filter !== category);
     console.log(this.state.filters);
     let unfilteredPosts = this.state.allPosts;
-    unfilteredPosts = unfilteredPosts.filter((post) => post.category === category);
+    unfilteredPosts = unfilteredPosts.filter((post) => post.category.name === category);
     let filteredPosts = this.state.filteredPosts;
     filteredPosts = filteredPosts.concat(unfilteredPosts);
     this.setState({
@@ -93,25 +115,34 @@ export default class HomePage extends React.Component { // eslint-disable-line r
       filteredPosts,
     });
   }
-  login(userId) {
+  login(userId, username) {
     this.setState({
       loggedIn: true,
       userId,
+      username,
     });
     this.init();
   }
   render() {
     if (!this.state.loggedIn) {
       return (
-        <LoginPage logIn={(userId) => this.login(userId)} />
+        <LoginPage logIn={(userId, username) => this.login(userId, username)} />
       );
     }
     return (
       <div>
         {
           this.state.helpMeForm || this.state.helpOutForm ?
-            // (<Form />) :
-            (<h1>tamar</h1>) :
+            (
+              <Form
+                categories={this.state.categories.map((category) => category.name)}
+                user={this.state.username}
+                userId={this.state.userId}
+                helpText={this.state.helpMeForm ? 'Help me!' : 'Help out'}
+                helpme={this.state.helpMeForm}
+                submit={() => this.submit()}
+                back={() => this.back()}
+              />) :
             (
               <div>
                 <Button
@@ -160,6 +191,3 @@ export default class HomePage extends React.Component { // eslint-disable-line r
     );
   }
 }
-
-HomePage.propTypes = {
-};
