@@ -19,13 +19,21 @@
   src: url("fonts/NHaasGroteskDSPro-65Md.otf");
 }
 
+@font-face {
+  font-family: buttonFont;
+  src: url("fonts/NHaasGroteskDSPro-75Bd.otf");
+}
+
 .post {
   /*font-family: firstFont;*/
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*min-height: 10vh;*/
 }
 
 .helpReq {
   width: 250px;
-  background-color: #9aa2f8;
+  background-color: #9ca5f6;
   margin-bottom: 20px;
   margin-left: 20px;
   margin-top: 10px;
@@ -57,3 +65,37 @@
 .post-content {
   font-family: secondFont;
 }
+
+.comment-button {
+  width: 85px;
+  height: 19px;
+  font-family: buttonFont;
+  font-size: 16px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.in-button {
+  width: 49.6px;
+  height: 19px;
+  font-family: buttonFont;
+  font-size: 16px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.buttons {
+  width: 100%;
+  /*height: 100%;*/
+  position: center;
+}
+
+.helpReq .comment-button {
+  background-color: #9470fc;
+}
+
+.helpReq .in-button {
+  background-color: #9470fc;
+}
+
+/*.helpSug*/

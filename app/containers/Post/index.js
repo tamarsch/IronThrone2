@@ -38,8 +38,8 @@ export default class Post extends React.PureComponent { // eslint-disable-line r
           <p><b>Status:</b> {this.props.postObj.status}</p>
         </div>
         <div className="buttons">
-          <button className="in-button"></button>
-          <button className="comment"></button>
+          <button className="in-button">I'm in!</button>
+          <button className="comment-button">Comment</button>
         </div>
         {
           this.props.postObj.comments.map((comment, index) =>
