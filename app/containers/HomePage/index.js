@@ -143,14 +143,16 @@ export default class HomePage extends React.Component { // eslint-disable-line r
                     ))
                   }
                 </div>
-                {
-                  this.state.filteredPosts.map((post, index) => (
-                    <Post
-                      key={index.toString()}
-                      postObj={post}
-                    />
-                  ))
-                }
+                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                  {
+                    this.state.filteredPosts.map((post, index) => (
+                      <Post
+                        key={index.toString()}
+                        postObj={post}
+                      />
+                    ))
+                  }
+                </div>
               </div>
             )
         }
