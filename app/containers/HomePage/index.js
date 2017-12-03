@@ -177,15 +177,15 @@ export default class HomePage extends React.Component { // eslint-disable-line r
                   onClick={() => this.openHelpMeForm()}
                   text="Help Me!"
                   buttonStyle={{ backgroundColor: '#9c4b9e' }}
-                  outerStyle={{ display: 'inline-block', padding: '0 10px' }}
+                  outerStyle={{ display: 'inline-block', padding: '0 10px', margin: '5px' }}
                 />
                 <Button
                   onClick={() => this.openHelpOutForm()}
                   text="Help Out"
                   buttonStyle={{ backgroundColor: '#9c4b9e' }}
-                  outerStyle={{ display: 'inline-block', padding: '0 10px' }}
+                  outerStyle={{ display: 'inline-block', padding: '0 10px', margin: '0 20px' }}
                 />
-                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px' }}>
                   <InputSelect
                     hint="Filter"
                     dataSource={this.state.categories.map((category) => category.name)}

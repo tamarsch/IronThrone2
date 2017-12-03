@@ -26,7 +26,7 @@ export default class InputSelect extends React.PureComponent {
   }
   render() {
     return (
-      <div>
+      <div style={{ marginTop: '-25px', marginRight: '10px' }}>
         <AutoComplete
           searchText={this.state.searchText}
           hintText={this.props.hint}

@@ -24,6 +24,10 @@
   src: url("fonts/NHaasGroteskDSPro-75Bd.otf");
 }
 
+p {
+  font-size: 15px;
+}
+
 .post {
   /*font-family: firstFont;*/
   /*display: flex;*/
@@ -32,32 +36,34 @@
 }
 
 .helpReq {
-  width: 250px;
+  width: 350px;
   background-color: #9ca5f6;
   margin-bottom: 20px;
   margin-left: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
   color: #9470fc;
+  padding-left: 5px;
 }
 
 .helpSug {
-  width: 250px;
+  width: 350px;
   background-color: #62dfdf;
   margin-bottom: 20px;
   margin-left: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
   color: #13c7c8;
+  padding-left: 5px;
 }
 
 .post-title {
   margin: auto;
   position: relative;
   width: 100%;
-  height: 15%;
+  height: auto;
   font-family: titleFont;
-  font-size: 30px;
+  font-size: 25px;
   text-align: left;
   /*color: #9470fc;*/
 }
@@ -88,6 +94,7 @@
   width: 100%;
   /*height: 100%;*/
   position: center;
+  padding-left: 15%;
 }
 
 .helpReq .comment-button {
